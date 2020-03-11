@@ -20,7 +20,7 @@ QList<BitcoinUnits::Unit> BitcoinUnits::availableUnits()
     unitlist.append(TPC);
     unitlist.append(mTPC);
     unitlist.append(uTPC);
-    unitlist.append(TPC);
+    unitlist.append(TAP);
     return unitlist;
 }
 
@@ -45,7 +45,7 @@ QString BitcoinUnits::longName(int unit)
     case TPC: return QString("TPC");
     case mTPC: return QString("mTPC");
     case uTPC: return QString::fromUtf8("µTPC (bits)");
-    case TPC: return QString("Tapyrus (tap)");
+    case TAP: return QString("Tapyrus (tap)");
     default: return QString("???");
     }
 }
