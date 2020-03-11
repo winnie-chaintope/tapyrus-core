@@ -64,9 +64,9 @@ QString BitcoinUnits::description(int unit)
 {
     switch(unit)
     {
-    case TPC: return QString("Bitcoins");
-    case mTPC: return QString("Milli-Bitcoins (1 / 1" THIN_SP_UTF8 "000)");
-    case uTPC: return QString("Micro-Bitcoins (bits) (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+    case TPC: return QString("TPC");
+    case mTPC: return QString("Milli-TPC (1 / 1" THIN_SP_UTF8 "000)");
+    case uTPC: return QString("Micro-TPC (bits) (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
     case TAP: return QString("Tapyrus (tap) (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
     default: return QString("???");
     }
