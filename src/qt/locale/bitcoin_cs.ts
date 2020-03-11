@@ -703,8 +703,8 @@
         <translation>Popisek zčervená, pokud má některý příjemce obdržet částku menší, než je aktuální práh pro prach.</translation>
     </message>
     <message>
-        <source>Can vary +/- %1 satoshi(s) per input.</source>
-        <translation>Může se lišit o +/– %1 satoshi na každý vstup.</translation>
+        <source>Can vary +/- %1 tapyrus(s) per input.</source>
+        <translation>Může se lišit o +/– %1 tapyrus na každý vstup.</translation>
     </message>
     <message>
         <source>(no label)</source>

@@ -713,8 +713,8 @@
         <translation>少なくともひとつの受取額が現在のダスト閾値を下回る場合にはこのラベルは赤くなります。</translation>
     </message>
     <message>
-        <source>Can vary +/- %1 satoshi(s) per input.</source>
-        <translation>ひとつの入力につき %1 satoshi 前後ずれることがあります。</translation>
+        <source>Can vary +/- %1 tapyrus(s) per input.</source>
+        <translation>ひとつの入力につき %1 tapyrus 前後ずれることがあります。</translation>
     </message>
     <message>
         <source>(no label)</source>
@@ -2137,10 +2137,10 @@
     <message>
         <source>Specify a custom fee per kB (1,000 bytes) of the transaction's virtual size.
 
-Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis per kB" for a transaction size of 500 bytes (half of 1 kB) would ultimately yield a fee of only 50 satoshis.</source>
+Note:  Since the fee is calculated on a per-byte basis, a fee of "100 tapyrus per kB" for a transaction size of 500 bytes (half of 1 kB) would ultimately yield a fee of only 50 tapyrus.</source>
         <translation>トランザクションの仮想サイズの kB (1,000 バイト) あたりのカスタム手数料を指定します。
 
-注:  手数料はバイト単位で計算されるので、500 バイト (1 kBの半分) のトランザクションサイズに対する "kB あたり 100 satoshi" の手数料は、最終的にわずか 50 satoshiとなります。</translation>
+注:  手数料はバイト単位で計算されるので、500 バイト (1 kBの半分) のトランザクションサイズに対する "kB あたり 100 tapyrus" の手数料は、最終的にわずか 50 tapyrusとなります。</translation>
     </message>
     <message>
         <source>per kilobyte</source>

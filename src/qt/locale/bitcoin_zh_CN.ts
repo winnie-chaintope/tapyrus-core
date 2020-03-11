@@ -687,8 +687,8 @@
         <translation>当任何一个收款金额小于目前的零散金额上限时，文字会变红色。</translation>
     </message>
     <message>
-        <source>Can vary +/- %1 satoshi(s) per input.</source>
-        <translation>每组输入可能有 +/- %1 个 satoshi 的误差。</translation>
+        <source>Can vary +/- %1 tapyrus(s) per input.</source>
+        <translation>每组输入可能有 +/- %1 个 tapyrus 的误差。</translation>
     </message>
     <message>
         <source>(no label)</source>

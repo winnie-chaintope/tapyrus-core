@@ -696,8 +696,8 @@ Var vänlig och försök igen.</translation>
         <translation>Denna etikett blir röd om någon mottagare får en betalning som är mindre än aktuell dammtröskel.</translation>
     </message>
     <message>
-        <source>Can vary +/- %1 satoshi(s) per input.</source>
-        <translation>Kan variera +/- %1 satoshi per inmatning.</translation>
+        <source>Can vary +/- %1 tapyrus(s) per input.</source>
+        <translation>Kan variera +/- %1 tapyrus per inmatning.</translation>
     </message>
     <message>
         <source>(no label)</source>

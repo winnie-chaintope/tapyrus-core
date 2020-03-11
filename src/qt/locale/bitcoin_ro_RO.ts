@@ -709,8 +709,8 @@
         <translation>Această etichetă devine roşie, dacă orice beneficiar primeşte o sumă mai mică decât pragul curent pentru praf.</translation>
     </message>
     <message>
-        <source>Can vary +/- %1 satoshi(s) per input.</source>
-        <translation>Poate varia +/- %1 satoshi pentru fiecare intrare.</translation>
+        <source>Can vary +/- %1 tapyrus(s) per input.</source>
+        <translation>Poate varia +/- %1 tapyrus pentru fiecare intrare.</translation>
     </message>
     <message>
         <source>(no label)</source>

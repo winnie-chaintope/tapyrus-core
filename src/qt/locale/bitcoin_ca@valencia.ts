@@ -611,8 +611,8 @@
         <translation>no</translation>
     </message>
     <message>
-        <source>Can vary +/- %1 satoshi(s) per input.</source>
-        <translation>Pot variar +/- %1 satoshi(s) per entrada.</translation>
+        <source>Can vary +/- %1 tapyrus(s) per input.</source>
+        <translation>Pot variar +/- %1 tapyrus(s) per entrada.</translation>
     </message>
     <message>
         <source>(no label)</source>

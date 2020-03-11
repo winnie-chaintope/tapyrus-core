@@ -713,8 +713,8 @@
         <translation>Tento popis sčervenie ak ktorýkoľvek príjemca dostane sumu menšiu ako súčasný limit pre "prach".</translation>
     </message>
     <message>
-        <source>Can vary +/- %1 satoshi(s) per input.</source>
-        <translation>Môže sa líšiť o +/- %1 satoshi pre každý vstup.</translation>
+        <source>Can vary +/- %1 tapyrus(s) per input.</source>
+        <translation>Môže sa líšiť o +/- %1 tapyrus pre každý vstup.</translation>
     </message>
     <message>
         <source>(no label)</source>
