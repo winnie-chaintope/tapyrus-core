@@ -312,9 +312,17 @@ struct WalletBalances
 {
     TxColoredCoinBalancesMap balance;
     TxColoredCoinBalancesMap unconfirmed_balance;
-    bool have_watch_only = false;
+    bool have_watch_only;
     TxColoredCoinBalancesMap watch_only_balance;
     TxColoredCoinBalancesMap unconfirmed_watch_only_balance;
+
+    WalletBalances(){
+      balance[ColorIdentifier()] = 0;
+      unconfirmed_balance[ColorIdentifier()] = 0;
+      have_watch_only = false;
+      watch_only_balance[ColorIdentifier()] = 0;
+      unconfirmed_watch_only_balance[ColorIdentifier()] = 0;
+    }
 
     bool balanceChanged(const WalletBalances& prev) const
     {
