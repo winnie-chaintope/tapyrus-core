@@ -310,11 +310,11 @@ struct WalletAddress
 //! Collection of wallet balances.
 struct WalletBalances
 {
-    CAmount balance = 0;
-    CAmount unconfirmed_balance = 0;
+    CAmount balance;
+    CAmount unconfirmed_balance;
     bool have_watch_only = false;
-    CAmount watch_only_balance = 0;
-    CAmount unconfirmed_watch_only_balance = 0;
+    CAmount watch_only_balance;
+    CAmount unconfirmed_watch_only_balance;
 
     bool balanceChanged(const WalletBalances& prev) const
     {
