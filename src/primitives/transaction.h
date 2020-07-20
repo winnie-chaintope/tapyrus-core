@@ -62,6 +62,7 @@ public:
  * transaction's output that it claims and a signature that matches the
  * output's public key.
  */
+
 class CTxIn
 {
 public:

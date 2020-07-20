@@ -117,6 +117,7 @@ class ColoredCoinTest(BitcoinTestFramework):
         self.num_nodes = 1
         self.setup_clean_chain = True
 
+
     def run_test(self):
         node = self.nodes[0]  # convenience reference to the node
         self.address = node.getnewaddress()

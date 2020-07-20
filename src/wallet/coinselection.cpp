@@ -59,7 +59,7 @@ struct {
 
 static const size_t TOTAL_TRIES = 100000;
 
-bool SelectCoinsBnB(std::vector<OutputGroup>& utxo_pool, const CAmount& target_value, const CAmount& cost_of_change, std::set<CInputCoin>& out_set, CAmount& value_ret, CAmount not_input_fees)
+bool SelectCoinsBnB(std::vector<OutputGroup>& utxo_pool, const CAmount& target_value, const CAmount& cost_of_change, std::set<CInputCoin>& out_set, CAmount& value_ret, CAmount not_input_fees, ColorIdentifier& colorId)
 {
     out_set.clear();
     CAmount curr_value = 0;
@@ -71,9 +71,11 @@ bool SelectCoinsBnB(std::vector<OutputGroup>& utxo_pool, const CAmount& target_v
     // Calculate curr_available_value
     CAmount curr_available_value = 0;
     for (const OutputGroup& utxo : utxo_pool) {
-        // Assert that this utxo is not negative. It should never be negative, effective value calculation should have removed it
-        assert(utxo.effective_value > 0);
-        curr_available_value += utxo.effective_value;
+        if (colorId == utxo.color_id) {
+            // Assert that this utxo is not negative. It should never be negative, effective value calculation should have removed it
+            assert(utxo.effective_value > 0);
+            curr_available_value += utxo.effective_value;
+        }
     }
     if (curr_available_value < actual_target) {
         return false;
@@ -210,7 +212,7 @@ static void ApproximateBestSubset(const std::vector<OutputGroup>& groups, const 
     }
 }
 
-bool KnapsackSolver(const CAmount& nTargetValue, std::vector<OutputGroup>& groups, std::set<CInputCoin>& setCoinsRet, CAmount& nValueRet)
+bool KnapsackSolver(const CAmount& nTargetValue, std::vector<OutputGroup>& groups, std::set<CInputCoin>& setCoinsRet, CAmount& nValueRet, ColorIdentifier& colorId)
 {
     setCoinsRet.clear();
     nValueRet = 0;
@@ -223,15 +225,17 @@ bool KnapsackSolver(const CAmount& nTargetValue, std::vector<OutputGroup>& group
     random_shuffle(groups.begin(), groups.end(), GetRandInt);
 
     for (const OutputGroup& group : groups) {
-        if (group.m_value == nTargetValue) {
-            util::insert(setCoinsRet, group.m_outputs);
-            nValueRet += group.m_value;
-            return true;
-        } else if (group.m_value < nTargetValue + MIN_CHANGE) {
-            applicable_groups.push_back(group);
-            nTotalLower += group.m_value;
-        } else if (!lowest_larger || group.m_value < lowest_larger->m_value) {
-            lowest_larger = group;
+        if (colorId == group.color_id) {
+            if (group.m_value == nTargetValue) {
+                util::insert(setCoinsRet, group.m_outputs);
+                nValueRet += group.m_value;
+                return true;
+            } else if (group.m_value < nTargetValue + MIN_CHANGE) {
+                applicable_groups.push_back(group);
+                nTotalLower += group.m_value;
+            } else if (!lowest_larger || group.m_value < lowest_larger->m_value) {
+                lowest_larger = group;
+            }
         }
     }
 
@@ -294,7 +298,7 @@ bool KnapsackSolver(const CAmount& nTargetValue, std::vector<OutputGroup>& group
 
  ******************************************************************************/
 
-void OutputGroup::Insert(const CInputCoin& output, int depth, bool from_me, size_t ancestors, size_t descendants) {
+void OutputGroup::Insert(const CInputCoin& output, int depth, bool from_me, size_t ancestors, size_t descendants, ColorIdentifier& colorId) {
     m_outputs.push_back(output);
     m_from_me &= from_me;
     m_value += output.effective_value;
@@ -307,6 +311,7 @@ void OutputGroup::Insert(const CInputCoin& output, int depth, bool from_me, size
     // coin itself; thus, this value is counted as the max, not the sum
     m_descendants = std::max(m_descendants, descendants);
     effective_value = m_value;
+    color_id = colorId;
 }
 
 std::vector<CInputCoin>::iterator OutputGroup::Discard(const CInputCoin& output) {

@@ -76,10 +76,11 @@ WalletTx MakeWalletTx(CWallet& wallet, const CWalletTx& wtx)
         result.txout_address_is_mine.emplace_back(ExtractDestination(txout.scriptPubKey, result.txout_address.back(), colorId) ?
                                                       IsMine(wallet, result.txout_address.back(), colorId) :
                                                       ISMINE_NO);
+        ColorIdentifier cid = GetColorIdFromScript(txout.scriptPubKey);
+        result.credit[cid] = wtx.GetCredit(ISMINE_ALL, cid);
+        result.debit[cid] = wtx.GetDebit(ISMINE_ALL, cid);
+        result.change[cid] = wtx.GetChange(cid);
     }
-    result.credit[ColorIdentifier()] = wtx.GetCredit(ISMINE_ALL);
-    result.debit[ColorIdentifier()] = wtx.GetDebit(ISMINE_ALL);
-    result.change[ColorIdentifier()] = wtx.GetChange();
     result.time = wtx.GetTxTime();
     result.value_map = wtx.mapValue;
     result.is_coinbase = wtx.IsCoinBase();
@@ -224,10 +225,11 @@ public:
         CAmount& fee,
         std::string& fail_reason) override
     {
+        ColorIdentifier colorId;
         LOCK2(cs_main, m_wallet.cs_wallet);
         auto pending = MakeUnique<PendingWalletTxImpl>(m_wallet);
         if (!m_wallet.CreateTransaction(recipients, pending->m_tx, pending->m_key, fee, change_pos,
-                fail_reason, coin_control, sign)) {
+                fail_reason, coin_control, colorId, sign)) {
             return {};
         }
         return std::move(pending);
@@ -334,12 +336,12 @@ public:
     WalletBalances getBalances() override
     {
         WalletBalances result;
-        result.balance[ColorIdentifier()] = m_wallet.GetBalance();
-        result.unconfirmed_balance[ColorIdentifier()] = m_wallet.GetUnconfirmedBalance();
+        result.balance = m_wallet.GetBalance();
+        result.unconfirmed_balance = m_wallet.GetUnconfirmedBalance();
         result.have_watch_only = m_wallet.HaveWatchOnly();
         if (result.have_watch_only) {
-            result.watch_only_balance[ColorIdentifier()] = m_wallet.GetBalance(ISMINE_WATCH_ONLY);
-            result.unconfirmed_watch_only_balance[ColorIdentifier()] = m_wallet.GetUnconfirmedWatchOnlyBalance();
+            result.watch_only_balance = m_wallet.GetBalance(ISMINE_WATCH_ONLY);
+            result.unconfirmed_watch_only_balance = m_wallet.GetUnconfirmedWatchOnlyBalance();
         }
         return result;
     }
@@ -355,10 +357,10 @@ public:
         num_blocks = ::chainActive.Height();
         return true;
     }
-    CAmount getBalance() override { return m_wallet.GetBalance(); }
+    CAmount getBalance() override { return m_wallet.GetBalance()[ColorIdentifier()]; }
     CAmount getAvailableBalance(const CCoinControl& coin_control) override
     {
-        return m_wallet.GetAvailableBalance(&coin_control);
+        return m_wallet.GetAvailableBalance(&coin_control)[ColorIdentifier()];
     }
     isminetype txinIsMine(const CTxIn& txin) override
     {
@@ -373,7 +375,9 @@ public:
     CAmount getDebit(const CTxIn& txin, isminefilter filter) override
     {
         LOCK2(::cs_main, m_wallet.cs_wallet);
-        return m_wallet.GetDebit(txin, filter);
+        const CWalletTx* parent = m_wallet.GetWalletTx(txin.prevout.hashMalFix);
+        ColorIdentifier colorId(GetColorIdFromScript(parent->tx->vout[txin.prevout.n].scriptPubKey));
+        return m_wallet.GetDebit(txin, filter)[colorId];
     }
     CAmount getCredit(const CTxOut& txout, isminefilter filter) override
     {
