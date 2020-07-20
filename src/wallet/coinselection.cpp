@@ -71,9 +71,11 @@ bool SelectCoinsBnB(std::vector<OutputGroup>& utxo_pool, const CAmount& target_v
     // Calculate curr_available_value
     CAmount curr_available_value = 0;
     for (const OutputGroup& utxo : utxo_pool) {
-        // Assert that this utxo is not negative. It should never be negative, effective value calculation should have removed it
-        assert(utxo.effective_value > 0);
-        curr_available_value += utxo.effective_value;
+        if (colorId == utxo.color_id) {
+            // Assert that this utxo is not negative. It should never be negative, effective value calculation should have removed it
+            assert(utxo.effective_value > 0);
+            curr_available_value += utxo.effective_value;
+        }
     }
     if (curr_available_value < actual_target) {
         return false;
@@ -223,15 +225,17 @@ bool KnapsackSolver(const CAmount& nTargetValue, std::vector<OutputGroup>& group
     random_shuffle(groups.begin(), groups.end(), GetRandInt);
 
     for (const OutputGroup& group : groups) {
-        if (group.m_value == nTargetValue) {
-            util::insert(setCoinsRet, group.m_outputs);
-            nValueRet += group.m_value;
-            return true;
-        } else if (group.m_value < nTargetValue + MIN_CHANGE) {
-            applicable_groups.push_back(group);
-            nTotalLower += group.m_value;
-        } else if (!lowest_larger || group.m_value < lowest_larger->m_value) {
-            lowest_larger = group;
+        if (colorId == group.color_id) {
+            if (group.m_value == nTargetValue) {
+                util::insert(setCoinsRet, group.m_outputs);
+                nValueRet += group.m_value;
+                return true;
+            } else if (group.m_value < nTargetValue + MIN_CHANGE) {
+                applicable_groups.push_back(group);
+                nTotalLower += group.m_value;
+            } else if (!lowest_larger || group.m_value < lowest_larger->m_value) {
+                lowest_larger = group;
+            }
         }
     }
 
